@@ -1,7 +1,14 @@
 class SudokuSolver:
     @staticmethod
     def validate_board(board: str):
-        pass
+        if not isinstance(board, str):
+            raise TypeError
+        for char in board:
+            int(char)  # check if board contains only digits
+        if len(board) == 81:
+            return True
+        else:
+            return False
 
     @staticmethod
     def get_row(board: str, position: int):
