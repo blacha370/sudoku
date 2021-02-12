@@ -119,3 +119,53 @@ class TestGetRow(TestCase):
         self.assertRaises(TypeError, SudokuSolver.get_row, board, False)
 
         self.assertRaises(TypeError, SudokuSolver.get_row, board, None)
+
+
+class TestGetColumn(TestCase):
+    def test_get_column(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertEqual(SudokuSolver.get_column(board, 1), board[1::9])
+
+        self.assertEqual(SudokuSolver.get_column(board, 9), board[0::9])
+
+        self.assertEqual(SudokuSolver.get_column(board, 80), board[8::0])
+
+    def test_get_column_with_negative_index(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_column(board, -1))
+
+    def test_get_column_with_to_big_index(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_column, board, 81)
+
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_column, board, 100)
+
+    def test_get_column_with_not_int_as_position(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, '1')
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, ' ')
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, '\n')
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, list())
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, dict())
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, tuple())
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, set())
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, -1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, True)
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, False)
+
+        self.assertRaises(TypeError, SudokuSolver.get_column, board, None)
