@@ -12,11 +12,22 @@ class SudokuSolver:
 
     @staticmethod
     def get_row(board: str, position: int):
-        pass
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            borders = ((position // 9) * 9, (position // 9 + 1) * 9)
+            return board[borders[0]:borders[1]]
 
     @staticmethod
     def get_column(board: str, position: int):
-        pass
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            return board[position % 9::9]
 
     @staticmethod
     def get_box(board: str, position: int):
