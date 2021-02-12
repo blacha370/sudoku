@@ -128,11 +128,11 @@ class TestGetColumn(TestCase):
 
         self.assertEqual(SudokuSolver.get_column(board, 9), board[0::9])
 
-        self.assertEqual(SudokuSolver.get_column(board, 80), board[8::0])
+        self.assertEqual(SudokuSolver.get_column(board, 80), board[8::9])
 
     def test_get_column_with_negative_index(self):
         board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
-        self.assertRaises(IndexError, SudokuSolver.get_column(board, -1))
+        self.assertRaises(IndexError, SudokuSolver.get_column, board, -1)
 
     def test_get_column_with_to_big_index(self):
         board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
