@@ -31,7 +31,16 @@ class SudokuSolver:
 
     @staticmethod
     def get_box(board: str, position: int):
-        pass
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            max_index = (position // 27 + 1) * 27
+            box_rows = board[max_index - 27:max_index]
+            pos = position % 27 % 9 // 27
+            box = ''.join(box_rows[pos * 3 + i * 9:(pos + 1) * 3 + i * 9] for i in range(3))
+            return box
 
     @staticmethod
     def check_position(board: str, position: int):
