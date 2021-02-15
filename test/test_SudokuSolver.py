@@ -169,3 +169,53 @@ class TestGetColumn(TestCase):
         self.assertRaises(TypeError, SudokuSolver.get_column, board, False)
 
         self.assertRaises(TypeError, SudokuSolver.get_column, board, None)
+
+
+class TestGetBox(TestCase):
+    def test_get_box(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertEqual(SudokuSolver.get_box(board, 1), board[1:3] + board[9:12] + board[18:21])
+
+        self.assertEqual(SudokuSolver.get_box(board, 8), board[6:9] + board[15:18] + board[24:27])
+
+        self.assertEqual(SudokuSolver.get_box(board, 80), board[59:62] + board[68:71] + board[77:80])
+
+    def test_get_box_with_negative_index(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_box, board, -1)
+
+    def test_get_box_with_to_big_index(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_box, board, 81)
+
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(IndexError, SudokuSolver.get_box, board, 100)
+
+    def test_get_box_with_not_int_as_position(self):
+        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, '1')
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, ' ')
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, '\n')
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, list())
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, dict())
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, tuple())
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, set())
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, -1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, True)
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, False)
+
+        self.assertRaises(TypeError, SudokuSolver.get_box, board, None)
