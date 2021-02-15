@@ -38,8 +38,8 @@ class SudokuSolver:
         else:
             max_index = (position // 27 + 1) * 27
             box_rows = board[max_index - 27:max_index]
-            pos = position % 27 % 9 // 27
-            box = ''.join(box_rows[pos * 3 + i * 9:(pos + 1) * 3 + i * 9] for i in range(3))
+            box_index = position % 27 % 9 // 3
+            box = ''.join([box_rows[3 * box_index + 9 * i:3 * (box_index + 1) + 9 * i] for i in range(3)])
             return box
 
     @staticmethod
