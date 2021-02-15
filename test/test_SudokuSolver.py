@@ -174,11 +174,12 @@ class TestGetColumn(TestCase):
 class TestGetBox(TestCase):
     def test_get_box(self):
         board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
-        self.assertEqual(SudokuSolver.get_box(board, 1), board[1:3] + board[9:12] + board[18:21])
+        print(board)
+        self.assertEqual(SudokuSolver.get_box(board, 1), board[0:3] + board[9:12] + board[18:21])
 
         self.assertEqual(SudokuSolver.get_box(board, 8), board[6:9] + board[15:18] + board[24:27])
 
-        self.assertEqual(SudokuSolver.get_box(board, 80), board[59:62] + board[68:71] + board[77:80])
+        self.assertEqual(SudokuSolver.get_box(board, 80), board[60:63] + board[69:72] + board[78:81])
 
     def test_get_box_with_negative_index(self):
         board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
