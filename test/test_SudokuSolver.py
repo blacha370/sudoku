@@ -288,7 +288,7 @@ class TestCheckBoard(TestCase):
         board = '0' * 81
         self.assertTrue(SudokuSolver.check_board(board))
 
-        board = '123456789456789123789123456214365897365897214897214365531642978531978531642'
+        board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
         self.assertTrue(SudokuSolver.check_board(board))
 
         board = board[:80] + '3'
