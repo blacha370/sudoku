@@ -44,7 +44,18 @@ class SudokuSolver:
 
     @staticmethod
     def check_position(board: str, position: int):
-        pass
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            row = SudokuSolver.get_row(board, position).replace('0', '')
+            column = SudokuSolver.get_column(board, position).replace('0', '')
+            box = SudokuSolver.get_box(board, position).replace('0', '')
+            if len(row) == len(set(row)) and len(column) == len(set(column)) and len(box) == len(set(box)):
+                return True
+            else:
+                return False
 
     @staticmethod
     def check_board(board: str):
