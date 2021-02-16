@@ -220,3 +220,65 @@ class TestGetBox(TestCase):
         self.assertRaises(TypeError, SudokuSolver.get_box, board, False)
 
         self.assertRaises(TypeError, SudokuSolver.get_box, board, None)
+
+
+class TestCheckPosition(TestCase):
+    def test_check_board(self):
+        board = '0' * 81
+        self.assertTrue(SudokuSolver.check_position(board, 0))
+
+        board = '1' * 81
+        self.assertFalse(SudokuSolver.check_position(board, 1))
+
+        board = '1' + '0' * 80
+        self.assertTrue(SudokuSolver.check_position(board, 0))
+
+        board = '123456678' + '0' * 72
+        self.assertFalse(SudokuSolver.check_position(board, 0))
+
+        board = '1230000004560000000007890000001' + '0' * 53
+        self.assertFalse(SudokuSolver.check_position(board, 0))
+
+        board = '123000000456000000799' + '0' * 60
+        self.assertFalse(SudokuSolver.check_position(board, 0))
+
+    def test_check_board_with_too_big_position(self):
+        board = '0' * 81
+        self.assertRaises(IndexError, SudokuSolver.check_position, board, 81)
+
+        self.assertRaises(IndexError, SudokuSolver.check_position, board, 100)
+
+    def test_check_board_with_negative_index(self):
+        board = '0' * 81
+        self.assertRaises(IndexError, SudokuSolver.check_position, board, -1)
+
+        self.assertRaises(IndexError, SudokuSolver.check_position, board, -19)
+
+    def test_check_position_with_not_int_as_position(self):
+        board = '0' * 81
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, '1')
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, ' ')
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, '\n')
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, list())
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, dict())
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, tuple())
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, set())
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, -1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, True)
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, False)
+
+        self.assertRaises(TypeError, SudokuSolver.check_position, board, None)
