@@ -307,4 +307,4 @@ class TestFindUnsolvedPositions(TestCase):
         self.assertEqual(SudokuSolver.find_unsolved_positions(board), [])
 
         board = board[:80] + '0'
-        self.assertEqual(SudokuSolver.find_unsolved_positions(board), [0])
+        self.assertEqual(SudokuSolver.find_unsolved_positions(board), [80])
