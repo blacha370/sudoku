@@ -1,83 +1,83 @@
 class SudokuSolver:
     @staticmethod
-    def get_row(position: tuple, board):
-        return board[position[0]]
-
-    @staticmethod
-    def get_column(position: tuple, board):
-        return [element[position[1]]
-                for element in board]
-
-    @staticmethod
-    def get_horizontal_box_line(position, y, board):
-        box = list()
-        if position[1] <= 2:
-            for x in range(3):
-                box.append(board[y][x])
-        elif position[1] <= 5:
-            for x in range(3, 6):
-                box.append(board[y][x])
-        elif position[1] <= 8:
-            for x in range(6, 9):
-                box.append(board[y][x])
+    def validate_board(board: str):
+        if not isinstance(board, str):
+            raise TypeError
+        for char in board:
+            int(char)  # check if board contains only digits
+        if len(board) == 81:
+            return True
         else:
             return False
-        return box
 
     @staticmethod
-    def get_box(position, board):
-        box = list()
-        if position[0] <= 2:
-            for y in range(3):
-                for element in SudokuSolver.get_horizontal_box_line(position, y, board):
-                    box.append(element)
-        elif position[0] <= 5:
-            for y in range(3, 6):
-                for element in SudokuSolver.get_horizontal_box_line(position, y, board):
-                    box.append(element)
-        elif position[0] <= 8:
-            for y in range(6, 9):
-                for element in SudokuSolver.get_horizontal_box_line(position, y, board):
-                    box.append(element)
+    def get_row(board: str, position: int):
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
         else:
-            return False
-        return box
+            borders = ((position // 9) * 9, (position // 9 + 1) * 9)
+            return board[borders[0]:borders[1]]
 
     @staticmethod
-    def solve_cell(board, position):
-        usedNumbers = set()
-        usedNumbers = usedNumbers | set(SudokuSolver.get_row(position, board))
-        usedNumbers = usedNumbers | set(
-            SudokuSolver.get_column(position, board))
-        usedNumbers = usedNumbers | set(SudokuSolver.get_box(position, board))
-        i = board[position[0]][position[1]] + 1
-        while True:
-            if i not in usedNumbers and i <= 9:
-                return i
-            elif i > 9:
+    def get_column(board: str, position: int):
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            return board[position % 9::9]
+
+    @staticmethod
+    def get_box(board: str, position: int):
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            max_index = (position // 27 + 1) * 27
+            box_rows = board[max_index - 27:max_index]
+            box_index = position % 27 % 9 // 3
+            box = ''.join([box_rows[3 * box_index + 9 * i:3 * (box_index + 1) + 9 * i] for i in range(3)])
+            return box
+
+    @staticmethod
+    def check_position(board: str, position: int):
+        if not isinstance(position, int) or isinstance(position, bool):
+            raise TypeError
+        elif not 0 <= position <= 80:
+            raise IndexError
+        else:
+            row = SudokuSolver.get_row(board, position).replace('0', '')
+            column = SudokuSolver.get_column(board, position).replace('0', '')
+            box = SudokuSolver.get_box(board, position).replace('0', '')
+            if len(row) == len(set(row)) and len(column) == len(set(column)) and len(box) == len(set(box)):
+                return True
+            else:
                 return False
-            else:
-                i += 1
 
     @staticmethod
-    def cells_to_solve(board):
-        to_do_cells = []
-        for y in range(9):
-            for x in range(9):
-                if board[y][x] == 0:
-                    to_do_cells.append((y, x))
-        return to_do_cells
+    def check_board(board: str):
+        for i in range(3):
+            for j in range(3):
+                position = 12 * (j + 2 * i) + 4 * i
+                if not SudokuSolver.check_position(board, position):
+                    return False
+        return True
 
     @staticmethod
-    def solve_board(board, to_do_cells):
-        done_cells = []
-        while len(to_do_cells) > 0:
-            current_cell = to_do_cells[0]
-            result = SudokuSolver.solve_cell(board, current_cell)
-            if result:
-                board[current_cell[0]][current_cell[1]] = result
-                done_cells.append(to_do_cells.pop(0))
-            else:
-                board[current_cell[0]][current_cell[1]] = 0
-                to_do_cells.insert(0, done_cells.pop())
-        return board
+    def find_unsolved_positions(board: str):
+        unsolved_positions = []
+        for index, number in enumerate(board):
+            if number == '0':
+                unsolved_positions.append(index)
+        return unsolved_positions
+
+    @staticmethod
+    def solve_cell(board: str, position: int):
+        pass
+
+    @staticmethod
+    def solve_board(board: str):
+        pass
