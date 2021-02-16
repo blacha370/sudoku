@@ -59,7 +59,12 @@ class SudokuSolver:
 
     @staticmethod
     def check_board(board: str):
-        pass
+        for i in range(3):
+            for j in range(3):
+                position = 12 * (j + 2 * i) + 4 * i
+                if not SudokuSolver.check_position(board, position):
+                    return False
+        return True
 
     @staticmethod
     def find_unsolved_positions(board: str):
