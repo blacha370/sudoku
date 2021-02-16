@@ -174,7 +174,6 @@ class TestGetColumn(TestCase):
 class TestGetBox(TestCase):
     def test_get_box(self):
         board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
-        print(board)
         self.assertEqual(SudokuSolver.get_box(board, 1), board[0:3] + board[9:12] + board[18:21])
 
         self.assertEqual(SudokuSolver.get_box(board, 8), board[6:9] + board[15:18] + board[24:27])
@@ -236,7 +235,7 @@ class TestCheckPosition(TestCase):
         board = '123456678' + '0' * 72
         self.assertFalse(SudokuSolver.check_position(board, 0))
 
-        board = '1230000004560000000007890000001' + '0' * 53
+        board = '1230000004560000007890000001' + '0' * 53
         self.assertFalse(SudokuSolver.check_position(board, 0))
 
         board = '123000000456000000799' + '0' * 60
@@ -282,3 +281,18 @@ class TestCheckPosition(TestCase):
         self.assertRaises(TypeError, SudokuSolver.check_position, board, False)
 
         self.assertRaises(TypeError, SudokuSolver.check_position, board, None)
+
+
+class TestCheckBoard(TestCase):
+    def test_check_board(self):
+        board = '0' * 81
+        self.assertTrue(SudokuSolver.check_board(board))
+
+        board = '123456789456789123789123456214365897365897214897214365531642978531978531642'
+        self.assertTrue(SudokuSolver.check_board(board))
+
+        board = board[:80] + '3'
+        self.assertFalse(SudokuSolver.check_board(board))
+
+        board = '1' * 81
+        self.assertFalse(SudokuSolver.check_board(board))
