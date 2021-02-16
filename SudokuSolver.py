@@ -68,7 +68,11 @@ class SudokuSolver:
 
     @staticmethod
     def find_unsolved_positions(board: str):
-        pass
+        unsolved_positions = []
+        for index, number in enumerate(board):
+            if number == '0':
+                unsolved_positions.append(index)
+        return unsolved_positions
 
     @staticmethod
     def solve_cell(board: str, position: int):
