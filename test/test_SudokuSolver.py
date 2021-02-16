@@ -296,3 +296,15 @@ class TestCheckBoard(TestCase):
 
         board = '1' * 81
         self.assertFalse(SudokuSolver.check_board(board))
+
+
+class TestFindUnsolvedPositions(TestCase):
+    def test_find_unsolved_positions(self):
+        board = '0' * 81
+        self.assertEqual(SudokuSolver.find_unsolved_positions(board), list(range(81)))
+
+        board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+        self.assertEqual(SudokuSolver.find_unsolved_positions(board), [])
+
+        board = board[:80] + '0'
+        self.assertEqual(SudokuSolver.find_unsolved_positions(board), [0])
