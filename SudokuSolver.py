@@ -83,7 +83,6 @@ class SudokuSolver:
         else:
             used_numbers = SudokuSolver.get_row(board, position) + SudokuSolver.get_column(board, position) + SudokuSolver.get_box(board, position)
             available_numbers = [str(i) for i in range(int(board[position]) + 1, 10) if str(i) not in used_numbers]
-            print(available_numbers)
             if len(available_numbers) > 0:
                 return True, board[:position] + available_numbers[0] + board[position + 1:]
             else:
