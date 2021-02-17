@@ -81,8 +81,9 @@ class SudokuSolver:
         elif not 0 <= position <= 80:
             raise IndexError
         else:
-            used_numbers = SudokuSolver.get_row(board) + SudokuSolver.get_column(board) + SudokuSolver.get_box(board)
-            available_numbers = [str(i) for i in range(int(board[position], 10)) if i not in used_numbers]
+            used_numbers = SudokuSolver.get_row(board, position) + SudokuSolver.get_column(board, position) + SudokuSolver.get_box(board, position)
+            available_numbers = [str(i) for i in range(int(board[position]) + 1, 10) if str(i) not in used_numbers]
+            print(available_numbers)
             if len(available_numbers) > 0:
                 return True, board[:position] + available_numbers[0] + board[position + 1:]
             else:
