@@ -308,3 +308,65 @@ class TestFindUnsolvedPositions(TestCase):
 
         board = board[:80] + '0'
         self.assertEqual(SudokuSolver.find_unsolved_positions(board), [80])
+
+
+class TestSolveCell(TestCase):
+    def test_solve_cell(self):
+        board = '123456789456789123789123456214365897365897214897214365531642978642978531978531640'
+        result = SudokuSolver.solve_cell(board, 80)
+        self.assertTrue(result[0])
+        self.assertEqual(result[1], board[:80] + '2')
+
+        board = '0' * 81
+        result = SudokuSolver.solve_cell(board, 0)
+        self.assertTrue(result[0])
+        self.assertEqual(result[1], '1' + '0' * 80)
+
+        result = SudokuSolver.solve_cell(board, 1)
+        self.assertTrue(result[0])
+        self.assertEqual(result[1], '01' + '0' * 79)
+
+        board = '1' + '0' * 80
+        result = SudokuSolver.solve_cell(board, 1)
+        self.assertTrue(result[0])
+        self.assertEqual(result[1], '12' + '0' * 79)
+
+    def test_solve_cell_that_should_be_false(self):
+        board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+        result = SudokuSolver.solve_cell(board, 0)
+        self.assertFalse(result[0])
+        self.assertEqual(result[1], '0' + board[1:])
+
+        board = '0123456789' + '0' * 71
+        result = SudokuSolver.solve_cell(board, 0)
+        self.assertFalse(result[0])
+        self.assertEqual(result[1], '0' + '0123456789' + '0' * 71)
+
+    def test_solve_cell_with_not_int_as_position(self):
+        board = '0' * 81
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, '1')
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, ' ')
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, '\n')
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, 1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, list())
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, dict())
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, tuple())
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, set())
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, -1.1)
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, True)
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, False)
+
+        self.assertRaises(TypeError, SudokuSolver.solve_cell, board, None)
