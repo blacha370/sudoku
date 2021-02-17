@@ -340,7 +340,7 @@ class TestSolveCell(TestCase):
         board = '0123456789' + '0' * 71
         result = SudokuSolver.solve_cell(board, 0)
         self.assertFalse(result[0])
-        self.assertEqual(result[1], '0' + '0123456789' + '0' * 71)
+        self.assertEqual(result[1], '0123456789' + '0' * 71)
 
     def test_solve_cell_with_not_int_as_position(self):
         board = '0' * 81
