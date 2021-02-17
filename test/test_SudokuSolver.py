@@ -1,5 +1,5 @@
 from unittest import TestCase
-from sudoku.SudokuSolver import SudokuSolver
+from sudoku.SudokuSolver import SudokuSolver, BoardError
 import random
 
 
@@ -370,3 +370,55 @@ class TestSolveCell(TestCase):
         self.assertRaises(TypeError, SudokuSolver.solve_cell, board, False)
 
         self.assertRaises(TypeError, SudokuSolver.solve_cell, board, None)
+
+
+class TestSolveBoard(TestCase):
+    def test_solve_board(self):
+        board = '0' * 81
+        result = SudokuSolver.solve_board(board)
+        self.assertEqual(result, '123456789456789123789123456214365897365897214897214365531642978642978531978531642')
+
+        board = '000090020520700460800600030000800370200431005083007000030009008051008093040010000'
+        result = SudokuSolver.solve_board(board)
+        self.assertEqual(result, '364195827529783461817624539195862374276431985483957216632579148751248693948316752')
+
+    def test_solve_unsolvable_board(self):
+        board = '11' + '0' * 79
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = '*' + '0' * 81
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = '0' * 80
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = '0' * 82
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+    def test_solve_board_with_not_string_as_board(self):
+        board = int(''.join([str(random.randint(0, 9)) for _ in range(81)]))
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = float(''.join([str(random.randint(0, 9)) for _ in range(79)]) + '0.1')
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = [str(random.randint(0, 9)) for _ in range(81)]
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = tuple([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = set([str(random.randint(0, 9)) for _ in range(81)])
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = dict()
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = True
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = False
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
+
+        board = None
+        self.assertRaises(BoardError, SudokuSolver.solve_board, board)
