@@ -105,7 +105,7 @@ class SudokuSolver:
             unsolved_positions = SudokuSolver.find_unsolved_positions(board)
             index = 0
             while SudokuSolver.find_unsolved_positions(board):
-                is_cell_solved, board = SudokuSolver.solve_cell(unsolved_positions[index])
+                is_cell_solved, board = SudokuSolver.solve_cell(board, unsolved_positions[index])
                 if index == 0 and not is_cell_solved:
                     raise BoardError('Board is unsolvable')
                 elif is_cell_solved:
