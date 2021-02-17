@@ -1,3 +1,7 @@
+class BoardError(Exception):
+    pass
+
+
 class SudokuSolver:
     @staticmethod
     def validate_board(board: str):
@@ -90,4 +94,24 @@ class SudokuSolver:
 
     @staticmethod
     def solve_board(board: str):
-        pass
+        try:
+            if not SudokuSolver.validate_board(board):
+                raise BoardError('Board is too long or to short')
+        except TypeError:
+            raise BoardError('Board should be string instead of {0}'.format(type(board)))
+        except ValueError:
+            raise BoardError('Wrong symbol inside board, allowed symbols: 0-9)')
+        if SudokuSolver.check_board(board):
+            unsolved_positions = SudokuSolver.find_unsolved_positions(board)
+            index = 0
+            while SudokuSolver.find_unsolved_positions(board):
+                is_cell_solved, board = SudokuSolver.solve_cell(unsolved_positions[index])
+                if index == 0 and not is_cell_solved:
+                    raise BoardError('Board is unsolvable')
+                elif is_cell_solved:
+                    index += 1
+                else:
+                    index -= 1
+            return board
+        else:
+            raise BoardError('Board is unsolvable')
