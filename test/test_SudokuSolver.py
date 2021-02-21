@@ -5,53 +5,99 @@ import random
 
 class TestValidateBoard(TestCase):
     def test_validate_correct_board(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertTrue(SudokuSolver.validate_board(board))
 
     def test_validate_to_long_board(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(82)])
+        board = [random.randint(0, 9) for _ in range(82)]
         self.assertFalse(SudokuSolver.validate_board(board))
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(100)])
+        board = [random.randint(0, 9) for _ in range(100)]
         self.assertFalse(SudokuSolver.validate_board(board))
 
     def test_validate_to_short_board(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)])
+        board = [random.randint(0, 9) for _ in range(80)]
         self.assertFalse(SudokuSolver.validate_board(board))
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(20)])
+        board = [random.randint(0, 9) for _ in range(20)]
         self.assertFalse(SudokuSolver.validate_board(board))
 
-    def test_validate_with_other_symbol_in_board(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)]) + 'a'
+    def test_validate_with_wrong_number_in_board(self):
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(10)
         self.assertRaises(ValueError, SudokuSolver.validate_board, board)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)]) + '!'
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(-1)
         self.assertRaises(ValueError, SudokuSolver.validate_board, board)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)]) + '/'
+    def test_validate_with_wrong_data_inside_board(self):
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(1.1)
         self.assertRaises(ValueError, SudokuSolver.validate_board, board)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)]) + '\n'
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(-1.1)
         self.assertRaises(ValueError, SudokuSolver.validate_board, board)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(80)]) + ' '
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append('')
         self.assertRaises(ValueError, SudokuSolver.validate_board, board)
 
-    def test_validate_with_board_not_as_string(self):
-        board = int(''.join([str(random.randint(0, 9)) for _ in range(81)]))
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append('0')
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append('1')
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append('-1')
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(list())
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(tuple())
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(set())
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(dict())
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(True)
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(False)
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+        board = [random.randint(0, 9) for _ in range(80)]
+        board.append(None)
+        self.assertRaises(ValueError, SudokuSolver.validate_board, board)
+
+    def test_validate_with_board_not_as_list(self):
+        board = 1234
         self.assertRaises(TypeError, SudokuSolver.validate_board, board)
 
-        board = float(''.join([str(random.randint(0, 9)) for _ in range(79)]) + '0.1')
+        board = 1234.1
         self.assertRaises(TypeError, SudokuSolver.validate_board, board)
 
-        board = [str(random.randint(0, 9)) for _ in range(81)]
+        board = '123'
         self.assertRaises(TypeError, SudokuSolver.validate_board, board)
 
-        board = tuple([str(random.randint(0, 9)) for _ in range(81)])
+        board = tuple()
         self.assertRaises(TypeError, SudokuSolver.validate_board, board)
 
-        board = set([str(random.randint(0, 9)) for _ in range(81)])
+        board = set()
         self.assertRaises(TypeError, SudokuSolver.validate_board, board)
 
         board = dict()
@@ -69,7 +115,7 @@ class TestValidateBoard(TestCase):
 
 class TestGetRow(TestCase):
     def test_get_row(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertEqual(SudokuSolver.get_row(board, 0), board[0:9])
 
         self.assertEqual(SudokuSolver.get_row(board, 1), board[0:9])
@@ -81,18 +127,17 @@ class TestGetRow(TestCase):
         self.assertEqual(SudokuSolver.get_row(board, 80), board[72:81])
 
     def test_get_row_with_negative_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_row, board, -1)
 
     def test_get_row_with_to_big_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_row, board, 81)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
         self.assertRaises(IndexError, SudokuSolver.get_row, board, 100)
 
     def test_get_row_with_not_int_as_position(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
 
         self.assertRaises(TypeError, SudokuSolver.get_row, board, '1')
 
@@ -123,7 +168,7 @@ class TestGetRow(TestCase):
 
 class TestGetColumn(TestCase):
     def test_get_column(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertEqual(SudokuSolver.get_column(board, 1), board[1::9])
 
         self.assertEqual(SudokuSolver.get_column(board, 9), board[0::9])
@@ -131,18 +176,17 @@ class TestGetColumn(TestCase):
         self.assertEqual(SudokuSolver.get_column(board, 80), board[8::9])
 
     def test_get_column_with_negative_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_column, board, -1)
 
     def test_get_column_with_to_big_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_column, board, 81)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
         self.assertRaises(IndexError, SudokuSolver.get_column, board, 100)
 
     def test_get_column_with_not_int_as_position(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
 
         self.assertRaises(TypeError, SudokuSolver.get_column, board, '1')
 
@@ -173,7 +217,7 @@ class TestGetColumn(TestCase):
 
 class TestGetBox(TestCase):
     def test_get_box(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertEqual(SudokuSolver.get_box(board, 1), board[0:3] + board[9:12] + board[18:21])
 
         self.assertEqual(SudokuSolver.get_box(board, 8), board[6:9] + board[15:18] + board[24:27])
@@ -181,18 +225,17 @@ class TestGetBox(TestCase):
         self.assertEqual(SudokuSolver.get_box(board, 80), board[60:63] + board[69:72] + board[78:81])
 
     def test_get_box_with_negative_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_box, board, -1)
 
     def test_get_box_with_to_big_index(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.get_box, board, 81)
 
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
         self.assertRaises(IndexError, SudokuSolver.get_box, board, 100)
 
     def test_get_box_with_not_int_as_position(self):
-        board = ''.join([str(random.randint(0, 9)) for _ in range(81)])
+        board = [random.randint(0, 9) for _ in range(81)]
 
         self.assertRaises(TypeError, SudokuSolver.get_box, board, '1')
 
@@ -223,38 +266,45 @@ class TestGetBox(TestCase):
 
 class TestCheckPosition(TestCase):
     def test_check_board(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
         self.assertTrue(SudokuSolver.check_position(board, 0))
 
-        board = '1' * 81
+        board = [1 for _ in range(81)]
         self.assertFalse(SudokuSolver.check_position(board, 1))
 
-        board = '1' + '0' * 80
+        board = [0 for _ in range(81)]
+        board.append(1)
         self.assertTrue(SudokuSolver.check_position(board, 0))
 
-        board = '123456678' + '0' * 72
+        board = [0 for _ in range(81)]
+        board[0] = 1
+        board[2] = 1
         self.assertFalse(SudokuSolver.check_position(board, 0))
 
-        board = '1230000004560000007890000001' + '0' * 53
+        board = [0 for _ in range(81)]
+        board[0] = 1
+        board[9] = 1
         self.assertFalse(SudokuSolver.check_position(board, 0))
 
-        board = '123000000456000000799' + '0' * 60
+        board = [0 for _ in range(81)]
+        board[0] = 1
+        board[10] = 1
         self.assertFalse(SudokuSolver.check_position(board, 0))
 
     def test_check_board_with_too_big_position(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.check_position, board, 81)
 
         self.assertRaises(IndexError, SudokuSolver.check_position, board, 100)
 
     def test_check_board_with_negative_index(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
         self.assertRaises(IndexError, SudokuSolver.check_position, board, -1)
 
         self.assertRaises(IndexError, SudokuSolver.check_position, board, -19)
 
     def test_check_position_with_not_int_as_position(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
 
         self.assertRaises(TypeError, SudokuSolver.check_position, board, '1')
 
@@ -285,65 +335,70 @@ class TestCheckPosition(TestCase):
 
 class TestCheckBoard(TestCase):
     def test_check_board(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
         self.assertTrue(SudokuSolver.check_board(board))
 
         board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+        board = [int(i) for i in board]
         self.assertTrue(SudokuSolver.check_board(board))
 
-        board = board[:80] + '3'
+        board[80] = 3
         self.assertFalse(SudokuSolver.check_board(board))
 
-        board = '1' * 81
+        board = [1 for _ in range(81)]
         self.assertFalse(SudokuSolver.check_board(board))
 
 
 class TestFindUnsolvedPositions(TestCase):
     def test_find_unsolved_positions(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
         self.assertEqual(SudokuSolver.find_unsolved_positions(board), list(range(81)))
 
         board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+        board = [int(i) for i in board]
         self.assertEqual(SudokuSolver.find_unsolved_positions(board), [])
 
-        board = board[:80] + '0'
+        board[80] = 0
         self.assertEqual(SudokuSolver.find_unsolved_positions(board), [80])
 
 
 class TestSolveCell(TestCase):
     def test_solve_cell(self):
         board = '123456789456789123789123456214365897365897214897214365531642978642978531978531640'
+        board = [int(i) for i in board]
         result = SudokuSolver.solve_cell(board, 80)
         self.assertTrue(result[0])
-        self.assertEqual(result[1], board[:80] + '2')
+        self.assertEqual(result[1], board[:80] + [2])
 
-        board = '0' * 81
+        board = [0 for _ in board]
         result = SudokuSolver.solve_cell(board, 0)
         self.assertTrue(result[0])
-        self.assertEqual(result[1], '1' + '0' * 80)
+        self.assertEqual(result[1], [1] + board[1:])
 
         result = SudokuSolver.solve_cell(board, 1)
         self.assertTrue(result[0])
-        self.assertEqual(result[1], '01' + '0' * 79)
+        self.assertEqual(result[1], [0, 1] + board[2:])
 
-        board = '1' + '0' * 80
+        board = [1] + [0 for _ in range(80)]
         result = SudokuSolver.solve_cell(board, 1)
         self.assertTrue(result[0])
-        self.assertEqual(result[1], '12' + '0' * 79)
+        self.assertEqual(result[1], [1, 2] + board[2:])
 
     def test_solve_cell_that_should_be_false(self):
         board = '123456789456789123789123456214365897365897214897214365531642978642978531978531642'
+        board = [int(i) for i in board]
         result = SudokuSolver.solve_cell(board, 0)
         self.assertFalse(result[0])
-        self.assertEqual(result[1], '0' + board[1:])
+        self.assertEqual(result[1], [0] + board[1:])
 
         board = '0123456789' + '0' * 71
+        board = [int(i) for i in board]
         result = SudokuSolver.solve_cell(board, 0)
         self.assertFalse(result[0])
-        self.assertEqual(result[1], '0123456789' + '0' * 71)
+        self.assertEqual(result[1], board)
 
     def test_solve_cell_with_not_int_as_position(self):
-        board = '0' * 81
+        board = [0 for _ in range(81)]
 
         self.assertRaises(TypeError, SudokuSolver.solve_cell, board, '1')
 
@@ -375,40 +430,46 @@ class TestSolveCell(TestCase):
 class TestSolveBoard(TestCase):
     def test_solve_board(self):
         board = '0' * 81
+        board = [int(i) for i in board]
         result = SudokuSolver.solve_board(board)
-        self.assertEqual(result, '123456789456789123789123456214365897365897214897214365531642978642978531978531642')
+        self.assertEqual(result, [int(i) for i in
+                                  '123456789456789123789123456214365897365897214897214365531642978642978531978531642'])
 
         board = '000090020520700460800600030000800370200431005083007000030009008051008093040010000'
+        board = [int(i) for i in board]
         result = SudokuSolver.solve_board(board)
-        self.assertEqual(result, '364195827529783461817624539195862374276431985483957216632579148751248693948316752')
+        self.assertEqual(result, [int(i) for i in
+                                  '364195827529783461817624539195862374276431985483957216632579148751248693948316752'])
 
     def test_solve_unsolvable_board(self):
         board = '11' + '0' * 79
+        board = [int(i) for i in board]
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = '*' + '0' * 81
+        board = [0 for _ in range(80)]
+        board.append('*')
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = '0' * 80
+        board = [0 for _ in range(80)]
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = '0' * 82
+        board = [0 for _ in range(82)]
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
     def test_solve_board_with_not_string_as_board(self):
-        board = int(''.join([str(random.randint(0, 9)) for _ in range(81)]))
+        board = 1234
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = float(''.join([str(random.randint(0, 9)) for _ in range(79)]) + '0.1')
+        board = 1234.1
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = [str(random.randint(0, 9)) for _ in range(81)]
+        board = '123'
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = tuple([str(random.randint(0, 9)) for _ in range(81)])
+        board = tuple()
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
-        board = set([str(random.randint(0, 9)) for _ in range(81)])
+        board = set()
         self.assertRaises(BoardError, SudokuSolver.solve_board, board)
 
         board = dict()
